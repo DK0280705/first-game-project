@@ -96,7 +96,6 @@ button_mask = 0
 text = "Hard"
 
 [node name="lunatic" type="Button" parent="Difficulties"]
-use_parent_material = true
 margin_top = 318.0
 margin_right = 186.0
 margin_bottom = 414.0

@@ -1,24 +1,24 @@
 extends Control
 
-onready var tween = get_node("Tween")
+onready var tween: Tween = get_node("Tween")
 onready var terminating: bool = false
 
-func exit():
+func exit() -> void:
 	terminating = true
 	get_tree().quit()
 
-func _ready():
+func _ready() -> void:
 	$VBoxContainer/start.grab_focus()
 
-func _input(event):
+func _input(event) -> void:
 	if terminating: return
 	if event.is_action_pressed("ui_cancel"):
 		if $VBoxContainer/quit.has_focus():
 			exit()
 		else: $VBoxContainer/quit.grab_focus()
 
-func _on_start_pressed():
-	var start: Node = load("res://scenes/menu_start.tscn").instance()
+func _on_start_pressed() -> void:
+	var start: Control = load("res://scenes/menu_start.tscn").instance()
 	tween.interpolate_property(self, "rect_position:x", 0, -225, 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
 	get_tree().current_scene.add_child(start)
 
@@ -31,40 +31,40 @@ func _on_credit_pressed():
 func _on_quit_pressed():
 	exit()
 
-func menu_focus(node):
+func menu_focus(node) -> void:
 	if terminating: return
 	tween.interpolate_property(node, "rect_position:x", 0, 15, 0.25, Tween.TRANS_CIRC, Tween.EASE_OUT)
 	tween.start()
 
-func menu_unfocus(node):
+func menu_unfocus(node) -> void:
 	if terminating: return
 	tween.interpolate_property(node, "rect_position:x", 15, 0, 0.25, Tween.TRANS_CIRC, Tween.EASE_OUT)
 	tween.start()
 
-func _on_start_focus_entered():
+func _on_start_focus_entered() -> void:
 	menu_focus($VBoxContainer/start)
 
-func _on_start_focus_exited():
+func _on_start_focus_exited() -> void:
 	menu_unfocus($VBoxContainer/start)
 
-func _on_options_focus_entered():
+func _on_options_focus_entered() -> void:
 	menu_focus($VBoxContainer/options)
 
-func _on_options_focus_exited():
+func _on_options_focus_exited() -> void:
 	menu_unfocus($VBoxContainer/options)
 
-func _on_quit_focus_entered():
+func _on_quit_focus_entered() -> void:
 	menu_focus($VBoxContainer/quit)
 
-func _on_credit_focus_entered():
+func _on_credit_focus_entered() -> void:
 	menu_focus($VBoxContainer/credit)
 
-func _on_credit_focus_exited():
+func _on_credit_focus_exited() -> void:
 	menu_unfocus($VBoxContainer/credit)
 
-func _on_quit_focus_exited():
+func _on_quit_focus_exited() -> void:
 	menu_unfocus($VBoxContainer/quit)
 
-func _notification(what):
+func _notification(what) -> void:
 	if (what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST):
 		exit()
