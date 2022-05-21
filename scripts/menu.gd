@@ -8,20 +8,22 @@ func exit() -> void:
 	get_tree().quit()
 
 func _ready() -> void:
+	tween.interpolate_property(self, "rect_position:x", 0, 200, 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
 	$VBoxContainer/start.grab_focus()
 
-func _input(event) -> void:
+func _process(_delta) -> void:
 	if terminating: return
-	if event.is_action_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("ui_cancel"):
 		if $VBoxContainer/quit.has_focus():
 			exit()
 		else: $VBoxContainer/quit.grab_focus()
 
 func _on_start_pressed() -> void:
 	var start: Control = load("res://scenes/menu_start.tscn").instance()
-	tween.interpolate_property(self, "rect_position:x", 0, -225, 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
+	tween.interpolate_property(self, "rect_position:x", 200, 0, 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
 	get_tree().current_scene.add_child(start)
-
+	get_tree().current_scene.remove_child(self)
+	queue_free()
 func _on_options_pressed():
 	pass
 

@@ -11,15 +11,14 @@ func _ready() -> void:
 	tween.interpolate_property($Difficulties, "rect_position:x", x + 200, x, 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	$Difficulties/easy.grab_focus()
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
+func _process(_delta) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
 		tween.interpolate_property($ColorRect, "self_modulate:a", 0.5, 0.0, 0.25, Tween.TRANS_CUBIC, Tween.EASE_OUT)	
 		tween.interpolate_property($Difficulties, "rect_position:x", x, x+200, 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
-		var scene: Node2D = get_tree().current_scene
-		var menu_container: Control = scene.get_child(5)
-		menu_container.get_child(1).interpolate_property(menu_container, "rect_position:x", -225, 0, 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
-		menu_container.get_child(0).get_child(0).grab_focus()
-		scene.remove_child(self)
+		var menu: Control = load("res://scenes/menu.tscn").instance()
+		get_tree().current_scene.add_child(menu)
+		get_tree().current_scene.remove_child(self)
+		queue_free()
 	
 func _on_easy_focus_entered() -> void:
 	tween.interpolate_property($Difficulties/easy, "rect_position:y", $Difficulties/easy.rect_position.y, 38, 0.25, Tween.TRANS_CIRC, Tween.EASE_OUT)
